@@ -28,7 +28,7 @@ export default function Payments() {
         validUntil.setDate(validUntil.getDate() + 30);
         return {
             memberId: '',
-            amount: 2000,
+            amount: 3500,
             paymentDate: today,
             validUntilDate: validUntil.toISOString().split('T')[0],
             paymentStatus: 'Completed',
@@ -90,7 +90,7 @@ export default function Payments() {
             validUntil.setDate(validUntil.getDate() + 30);
             setFormData({
                 memberId: '',
-                amount: 2000,
+                amount: 3500,
                 paymentDate: new Date().toISOString().split('T')[0],
                 validUntilDate: validUntil.toISOString().split('T')[0],
                 paymentStatus: 'Completed',
