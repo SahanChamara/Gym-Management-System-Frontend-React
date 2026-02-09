@@ -73,8 +73,8 @@ export default function Sidebar() {
                             <Dumbbell className="w-8 h-8 text-white"/>
                         </div>
                         <div>
-                            <h1 className="text-xl font-bold text-white">Gym Management</h1>
-                            <p className="text-slate-400 text-sm">Pro Dashboard</p>
+                            <h1 className="text-xl font-bold text-white">The RSK Fitness</h1>
+                            <p className="text-slate-400 text-sm">Dashboard</p>
                         </div>
                     </div>
                 </div>

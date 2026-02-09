@@ -206,7 +206,7 @@ export default function Dashboard() {
                                     className="text-sm font-medium text-slate-700 dark:text-slate-300">Schedule Class</span>
                             </button>
                             <button
-                                onClick={() => navigate('/payments')}                         
+                                onClick={() => navigate('/payments')}
                                 className="bg-white dark:bg-slate-800 rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-200 border border-slate-200 dark:border-slate-700 text-center hover:-translate-y-0.5 h-44 md:h-[175px] flex flex-col items-center justify-center">
                                 <CreditCard className="w-6 h-6 text-purple-600 dark:text-purple-400 mx-auto mb-2" />
                                 <span
