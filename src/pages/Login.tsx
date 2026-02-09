@@ -4,7 +4,6 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import { AuthContext } from '../context/AuthContext'
 import { forgotPassword, resetPassword } from '../services/auth'
-
 import InputField from '../components/InputField'
 import { Button, LinkButton } from '../components/Button'
 import ToastConfig from '../components/ToastConfig'
