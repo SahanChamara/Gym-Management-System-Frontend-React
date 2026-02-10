@@ -79,7 +79,7 @@ export default function Login() {
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900">
             <div className="bg-white dark:bg-slate-800 p-8 rounded-lg shadow-lg w-full max-w-md">
                 <h1 className="text-3xl font-bold text-slate-800 dark:text-slate-100 mb-6 text-center">
-                    {step === 'RESET' ? 'Reset Password' : step === 'FORGOT' ? 'Forgot Password' : 'Login'}
+                    {step === 'RESET' ? 'Reset Password' : step === 'FORGOT' ? 'Forgot Password' : 'THE RSK FITNESS'}
                 </h1>
 
                 {step === 'LOGIN' && (
