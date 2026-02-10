@@ -17,7 +17,16 @@ export default function PaymentForm({ formData, onSubmit, onCancel, loading }: P
     const [showDropdown, setShowDropdown] = useState(false);
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [membersLoading, setMembersLoading] = useState(false);
+    const [paymentPlan, setPaymentPlan] = useState<string>('1month');
     const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // Payment plan configurations
+    const paymentPlans = {
+        '1month': { amount: 3500, months: 1, label: '1 Month' },
+        '3months': { amount: 9000, months: 3, label: '3 Months' },
+        '6months': { amount: 16000, months: 6, label: '6 Months' },
+        '1year': { amount: 25000, months: 12, label: '1 Year' },
+    };
 
     // Fetch members and pre-populate searchTerm when editing
     useEffect(() => {
@@ -39,17 +48,22 @@ export default function PaymentForm({ formData, onSubmit, onCancel, loading }: P
         })();
     }, [formData.paymentId, formData.memberId]);
 
-    // Update validUntilDate when paymentDate changes
+    // Update amount and validUntilDate when payment plan or paymentDate changes
     useEffect(() => {
-        if (data.paymentDate) {
+        if (data.paymentDate && paymentPlan) {
             const paymentDate = new Date(data.paymentDate);
             if (!isNaN(paymentDate.getTime())) {
+                const plan = paymentPlans[paymentPlan as keyof typeof paymentPlans];
                 const validUntil = new Date(paymentDate);
-                validUntil.setDate(paymentDate.getDate() + 30);
-                setData((prev) => ({ ...prev, validUntilDate: validUntil.toISOString().split('T')[0] }));
+                validUntil.setMonth(paymentDate.getMonth() + plan.months);
+                setData((prev) => ({
+                    ...prev,
+                    amount: plan.amount,
+                    validUntilDate: validUntil.toISOString().split('T')[0]
+                }));
             }
         }
-    }, [data.paymentDate]);
+    }, [data.paymentDate, paymentPlan]);
 
     // Close dropdown on click outside
     useEffect(() => {
@@ -107,7 +121,7 @@ export default function PaymentForm({ formData, onSubmit, onCancel, loading }: P
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white dark:bg-slate-800 p-6 rounded-lg shadow-lg max-w-lg w-full max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-300 dark:scrollbar-thumb-slate-600">
-            <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">
+                <h2 className="text-xl font-bold text-slate-800 dark:text-slate-100 mb-4">
                     {formData.paymentId ? 'Edit Payment' : 'Add Payment'}
                 </h2>
                 <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4">
@@ -127,9 +141,8 @@ export default function PaymentForm({ formData, onSubmit, onCancel, loading }: P
                             }}
                             onFocus={() => setShowDropdown(true)}
                             disabled={membersLoading}
-                            className={`p-2 border rounded-lg dark:bg-slate-700 dark:text-slate-200 w-full ${
-                                errors.memberId ? 'border-red-500' : ''
-                            }`}
+                            className={`p-2 border rounded-lg dark:bg-slate-700 dark:text-slate-200 w-full ${errors.memberId ? 'border-red-500' : ''
+                                }`}
                         />
                         {errors.memberId && (
                             <p className="text-red-500 text-xs mt-1">{errors.memberId}</p>
@@ -154,6 +167,24 @@ export default function PaymentForm({ formData, onSubmit, onCancel, loading }: P
                     </div>
 
                     <div className="flex flex-col gap-1">
+                        <label htmlFor="paymentPlan" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Select Payment Plan
+                        </label>
+                        <select
+                            id="paymentPlan"
+                            value={paymentPlan}
+                            onChange={(e) => setPaymentPlan(e.target.value)}
+                            className="p-2 border rounded-lg dark:bg-slate-700 dark:text-slate-200 w-full"
+                        >
+                            {Object.entries(paymentPlans).map(([key, plan]) => (
+                                <option key={key} value={key}>
+                                    {plan.label} - LKR {plan.amount.toLocaleString()}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="flex flex-col gap-1">
                         <label htmlFor="amount" className="text-sm font-medium text-gray-700 dark:text-gray-300">
                             Amount (LKR)
                         </label>
@@ -169,9 +200,9 @@ export default function PaymentForm({ formData, onSubmit, onCancel, loading }: P
                                 setData({ ...data, amount: value });
                                 setErrors((prev) => ({ ...prev, amount: '' }));
                             }}
-                            className={`p-2 border rounded-lg dark:bg-slate-700 dark:text-slate-200 w-full ${
-                                errors.amount ? 'border-red-500' : ''
-                            }`}
+                            className={`p-2 border rounded-lg dark:bg-slate-700 dark:text-slate-200 w-full opacity-75 ${errors.amount ? 'border-red-500' : ''
+                                }`}
+                            title="Amount is automatically set based on selected payment plan"
                         />
                         {errors.amount && <p className="text-red-500 text-xs mt-1">{errors.amount}</p>}
                     </div>
@@ -196,7 +227,7 @@ export default function PaymentForm({ formData, onSubmit, onCancel, loading }: P
                         <label
                             htmlFor="validUntilDate"
                             className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                            title="Automatically set to 30 days from Payment Date"
+                            title="Automatically calculated based on Payment Date and selected plan"
                         >
                             Valid Until
                         </label>
@@ -220,9 +251,8 @@ export default function PaymentForm({ formData, onSubmit, onCancel, loading }: P
                                 setData({ ...data, paymentStatus: e.target.value });
                                 setErrors((prev) => ({ ...prev, paymentStatus: '' }));
                             }}
-                            className={`p-2 border rounded-lg dark:bg-slate-700 dark:text-slate-200 w-full ${
-                                errors.paymentStatus ? 'border-red-500' : ''
-                            }`}
+                            className={`p-2 border rounded-lg dark:bg-slate-700 dark:text-slate-200 w-full ${errors.paymentStatus ? 'border-red-500' : ''
+                                }`}
                         >
                             <option value="">Select Status</option>
                             <option value="Completed">Completed</option>
