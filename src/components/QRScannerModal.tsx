@@ -33,6 +33,11 @@ export default function QRScannerModal({ onScan, onClose }: QRScannerModalProps)
         setScannerKey(prev => prev + 1); // Force remount Scanner
     };
 
+    const handleScan = (detectedCodes: IDetectedBarcode[]) => {
+        onScan(detectedCodes);
+        onClose(); // Automatically close modal after successful scan
+    };
+
     return (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
             <div className="bg-white dark:bg-slate-800 border dark:border-slate-700 p-6 rounded-2xl shadow-2xl w-full max-w-md sm:max-w-lg">
@@ -65,7 +70,7 @@ export default function QRScannerModal({ onScan, onClose }: QRScannerModalProps)
                         <div style={{ width: '100%' }}>
                             <Scanner
                                 key={scannerKey}
-                                onScan={onScan}
+                                onScan={handleScan}
                                 onError={handleScanError}
                                 constraints={{ facingMode: 'environment' }}
                                 scanDelay={300}
