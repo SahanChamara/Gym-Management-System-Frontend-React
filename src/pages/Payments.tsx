@@ -25,10 +25,10 @@ export default function Payments() {
     const [formData, setFormData] = useState<Payment>(() => {
         const today = new Date().toISOString().split('T')[0];
         const validUntil = new Date();
-        validUntil.setDate(validUntil.getDate() + 30);
+        validUntil.setMonth(validUntil.getMonth() + 1);
         return {
             memberId: '',
-            amount: 2000,
+            amount: 3500,
             paymentDate: today,
             validUntilDate: validUntil.toISOString().split('T')[0],
             paymentStatus: 'Completed',
@@ -87,10 +87,10 @@ export default function Payments() {
             setShowForm(false);
             await fetchPayments();
             const validUntil = new Date();
-            validUntil.setDate(validUntil.getDate() + 30);
+            validUntil.setMonth(validUntil.getMonth() + 1);
             setFormData({
                 memberId: '',
-                amount: 2000,
+                amount: 3500,
                 paymentDate: new Date().toISOString().split('T')[0],
                 validUntilDate: validUntil.toISOString().split('T')[0],
                 paymentStatus: 'Completed',

@@ -7,7 +7,6 @@ import Sidebar from "../components/Sidebar.tsx";
 import QRScannerModal from "../components/QRScannerModal.tsx";
 import { addAttendance, getAttendances } from "../services/api";
 import type { Attendance } from "../types";
-
 import { io } from "socket.io-client";
 
 export default function Attendance() {
@@ -117,7 +116,7 @@ export default function Attendance() {
       const errorMessage =
         error instanceof Error && "response" in error
           ? (error as ApiError).response?.data?.message ||
-            "Something went wrong"
+          "Something went wrong"
           : "Something went wrong";
       toast.error(errorMessage, { position: "top-right" });
       setShowCamera(false);
@@ -301,11 +300,10 @@ export default function Attendance() {
           {attendancesToShow.map((att, index) => (
             <tr
               key={att.attendanceId}
-              className={`hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors ${
-                index % 2 === 0
+              className={`hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors ${index % 2 === 0
                   ? "bg-white dark:bg-slate-800"
                   : "bg-slate-50/50 dark:bg-slate-800/50"
-              }`}
+                }`}
             >
               <td className="py-4 px-6 font-medium text-slate-900 dark:text-white">
                 {att.name || "N/A"}
@@ -330,12 +328,12 @@ export default function Attendance() {
                 >
                   {att.timeIn && att.timeIn !== "N/A"
                     ? new Date(att.timeIn).toLocaleTimeString("en-US", {
-                        timeZone: "Asia/Colombo",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })
+                      timeZone: "Asia/Colombo",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
                     : // if timeIn missing but date exists, show date-only time (00:00) as '—'
-                      "N/A"}
+                    "N/A"}
                 </div>
               </td>
               <td className="py-4 px-6">
@@ -345,9 +343,9 @@ export default function Attendance() {
                 >
                   {att.timeOut && att.timeOut !== "N/A"
                     ? new Date(att.timeOut).toLocaleTimeString("en-US", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
                     : "N/A"}
                 </div>
               </td>
@@ -385,11 +383,10 @@ export default function Attendance() {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className={`px-4 py-2 rounded-xl flex items-center transition-all duration-200 ${
-                hasActiveFilters
+              className={`px-4 py-2 rounded-xl flex items-center transition-all duration-200 ${hasActiveFilters
                   ? "bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300 border border-blue-200 dark:border-blue-800"
                   : "bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600"
-              }`}
+                }`}
             >
               <Filter className="w-4 h-4 mr-2" />
               Filters
@@ -404,11 +401,10 @@ export default function Attendance() {
             <button
               onClick={() => setShowLatestOnly((v) => !v)}
               title="Toggle latest per member"
-              className={`px-3 py-2 rounded-xl flex items-center transition-all duration-200 border ${
-                showLatestOnly
+              className={`px-3 py-2 rounded-xl flex items-center transition-all duration-200 border ${showLatestOnly
                   ? "bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-900/30 dark:text-orange-300"
                   : "bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600"
-              }`}
+                }`}
             >
               <Clock className="w-4 h-4 mr-2" />
               Latest per member
@@ -459,10 +455,10 @@ export default function Attendance() {
                   onChange={(e) =>
                     setTimeFilter(
                       e.target.value as
-                        | "today"
-                        | "thisWeek"
-                        | "thisMonth"
-                        | "all"
+                      | "today"
+                      | "thisWeek"
+                      | "thisMonth"
+                      | "all"
                     )
                   }
                   className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
